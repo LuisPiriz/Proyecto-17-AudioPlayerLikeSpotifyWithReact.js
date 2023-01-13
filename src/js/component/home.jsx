@@ -1,3 +1,4 @@
+import { func } from "prop-types";
 import React, { useState, useEffect, useRef } from "react";
 
 //create your first component
@@ -16,7 +17,7 @@ const Home = () => {
 		.then((data) => setList(data)) //3. GUarda el json en un objeto data
 
 	},[])
-	console.log(list)
+	// console.log(list)
 
 	useEffect(() => {
 		if (playElement.current) {
@@ -29,18 +30,30 @@ const Home = () => {
 		setNumber(index);
 		setSonando(true);
 		playElement.current.play();
-		console.log("PLAY");
+		// console.log("PLAY");
 	}
+
 	function pauseFunction() {
 		setSonando(false);
 		playElement.current.pause();
 	}
-	if (list.length > 0 && number >= 0 && number < list.length) {
+	function subirVolumen() {
+		playElement.current.volume +=0.2;
+	}
+	function bajarVolumen() {
+		playElement.current.volume -=0.2;
+	}
+	const random = Math.floor(Math.random() * 21)
+	// console.log(random)
+
+	if (list.length > 0 && number >= 0) {
 	return (
 	<>
 	<div className="bg-warning text-center">
 		<audio ref={playElement} id="audioPlayer"/>
-		<h1 className="text-light pt-3"><strong>Audio Player</strong></h1>
+		<div className="bg-danger">
+		<h1 className="text-light p-3"><strong>Audio Player</strong></h1>
+		</div>
 		<div className="d-flex justify-content-center">
 			<ul className="list-group w-25 m-4">
 				{list.map((item, index)=>
@@ -49,11 +62,22 @@ const Home = () => {
 					</li>)}
 			</ul>
 		</div>
-		<div className="d-flex justify-content-center bg-danger">
-			<button className="btn btn-success m-2" onClick={() => (number == 0) ? setNumber(21) : setNumber(number - 1)}><i className="fa fa-backward"></i></button>
-			<button className="btn btn-success m-2" onClick={() => sonando ? pauseFunction() : playFunction(number)}>{sonando ? "Pausar" : "Play"}
-			</button>
-			<button className="btn btn-success m-2" onClick={() => (number == 21) ? setNumber(0) : setNumber(number + 1)}><i className="fa fa-forward"></i></button>
+		<div className="d-flex justify-content-between">
+			<div className="bg-danger w-50">
+				<button className="btn btn-success m-2" onClick={bajarVolumen}><i className="fa fa-arrow-down"></i></button>
+				<button className="btn btn-success m-2" onClick={() => (number == 0) ? setNumber(21) : setNumber(number - 1)}><i className="fa fa-backward"></i></button>
+				<button className="btn btn-success m-2" onClick={() => sonando ? pauseFunction() : playFunction(number)}>{sonando ? "Pause" : "Play"}
+				</button>
+				<button className="btn btn-success m-2" onClick={() => (number == 21) ? setNumber(0) : setNumber(number + 1)}><i className="fa fa-forward"></i></button>
+				<button className="btn btn-success m-2" onClick={subirVolumen}><i className="fa fa-arrow-up"></i></button>
+			</div>
+			<div className="bg-danger w-50">
+				<button className="btn btn-success m-2" onClick={() => setNumber(random)}>Random</button>
+				{/* <input type="checkbox" id="input" onChange/>
+				<label class="form-check-label text-light" for="input">
+				Repeat
+				</label> */}
+			</div>
 		</div>
 	</div>
 	</>
