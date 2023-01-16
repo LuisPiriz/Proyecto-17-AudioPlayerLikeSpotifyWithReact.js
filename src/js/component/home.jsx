@@ -46,6 +46,7 @@ const Home = () => {
 	const random = Math.floor(Math.random() * 21)
 	// console.log(random)
 
+	// Esto es para que cargue solo cuando esté todo listo y no tire error
 	if (list.length > 0 && number >= 0) {
 	return (
 	<>
@@ -55,23 +56,38 @@ const Home = () => {
 		<h1 className="text-light p-3"><strong>Audio Player</strong></h1>
 		</div>
 		<div className="d-flex justify-content-center">
+
 			<ul className="list-group w-25 m-4">
 				{list.map((item, index)=>
 					<li className="list-group-item bg-danger" key={index}>
-						<button onClick={() => playFunction(index)} className="btn btn-success w-100">{item.name}</button>
+						<button id="canciones" onClick={() => playFunction(index)} className="btn btn-success w-100">{item.name}</button>
+						{/* <button id="canciones" onClick={() => {playFunction(index); sonando ? className="btn btn-success w-100" : className="btn btn-info w-100"}}>{item.name}</button> */}
 					</li>)}
 			</ul>
+			
 		</div>
 		<div className="d-flex justify-content-between">
 			<div className="bg-danger w-50">
+
+				{/* Bajar volumen */}
 				<button className="btn btn-success m-2" onClick={bajarVolumen}><i className="fa fa-arrow-down"></i></button>
-				<button className="btn btn-success m-2" onClick={() => (number == 0) ? setNumber(21) : setNumber(number - 1)}><i className="fa fa-backward"></i></button>
+
+				{/* Canción anterior */}
+				<button className="btn btn-success m-2" onClick={() => {setSonando(true); (number == 0) ? setNumber(21) : setNumber(number - 1)}}><i className="fa fa-backward"></i></button>
+
+				{/* Pause/Play */}
 				<button className="btn btn-success m-2" onClick={() => sonando ? pauseFunction() : playFunction(number)}>{sonando ? "Pause" : "Play"}
 				</button>
-				<button className="btn btn-success m-2" onClick={() => (number == 21) ? setNumber(0) : setNumber(number + 1)}><i className="fa fa-forward"></i></button>
+
+				{/* Siguiente canción */}
+				<button className="btn btn-success m-2" onClick={() => {setSonando(true); (number == 21) ? setNumber(0) : setNumber(number + 1)}}><i className="fa fa-forward"></i></button>
+
+				{/* Subir volumen */}
 				<button className="btn btn-success m-2" onClick={subirVolumen}><i className="fa fa-arrow-up"></i></button>
+
 			</div>
 			<div className="bg-danger w-50">
+				{/* Canción random */}
 				<button className="btn btn-success m-2" onClick={() => setNumber(random)}>Random</button>
 				{/* <input type="checkbox" id="input" onChange/>
 				<label class="form-check-label text-light" for="input">
